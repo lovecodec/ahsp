@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+.domain, .workplace {
+	font-size: 13px;
+}
+
+.key {
+	color: #999;
+	font-size: 13px;
+	width: 100px;
+	display: inline-block;
+	border-right: 1px dotted;
+	text-indent:10px;
+}
+
+.value{
+	width: 100px;
+	display: inline-block;
+	border-right: 1px dotted;
+	text-indent:10px;
+	font-size: 16px;
+}
+
+.count {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}
+
+.info{
+	text-align:center;
+	margin-top:20px;
+}
+.info1{
+	text-align:center;
+}
+.articleInfo,.patentInfo{
+
+}
+.article-item-title{
+	margin-top:15px;
+	margin-bottom:5px;
+	font-weight:bold;
+}
+.article-item-info{
+	font-size:12px;
+}
+.patentInfo{
+	display: none;
+}
+.patent-item div{
+	font-size:12px;
+}
+.patent-item{
+	margin-top:30px;
+	border-bottom :1px dotted #999;
+}
+.patent-item-title{
+	font-weight:bold;
+}
+.detail{
+	margin-bottom:10px;
+}

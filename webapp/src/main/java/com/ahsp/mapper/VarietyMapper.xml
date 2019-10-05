@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.VarietyMapper">
+    <select id="findAllVariety" resultType="variety" parameterType="int">
+		SELECT * FROM variety ORDER BY judgementYear DESC LIMIT
+		#{upBound},#{lowerBound}
+	</select>
+
+    <!-- 查询一共有多少条记录，无条件的情况下 -->
+    <select id="findAllVarietyCount" resultType="int">
+		select count(*) from variety
+	</select>
+
+    <!-- sql片段 -->
+    <sql id="whereClause">
+        <if test="criteria != null">
+            <if test="criteria.judgementNo != null and criteria.judgementNo !=''">
+                AND judgementNo like '%${criteria.judgementNo}%'
+            </if>
+            <if test="criteria.vname != null and criteria.vname !=''">
+                AND vname like '%${criteria.vname}%'
+            </if>
+            <if test="criteria.judgementYear != null and criteria.judgementYear !=''">
+                AND judgementYear =#{criteria.judgementYear}
+            </if>
+            <if test="criteria.appCompany != null and criteria.appCompany !=''">
+                AND appCompany like '%${criteria.appCompany}%'
+            </if>
+            <if test="criteria.type != null and criteria.type !=''">
+                AND type =#{criteria.type}
+            </if>
+            <if test="criteria.isTransgenosis != null and criteria.isTransgenosis !=''">
+                AND isTransgenosis =#{criteria.isTransgenosis}
+            </if>
+            <if test="criteria.judgeId != null and criteria.judgeId !=''">
+                AND judgeId =#{criteria.judgeId}
+            </if>
+        </if>
+    </sql>
+
+    <select id="findVarietyByCriteria" resultType="variety">
+        SELECT * FROM variety
+        <where>
+            <!-- 引入sql语句 -->
+            <include refid="whereClause"/>
+        </where>
+        ORDER BY judgementYear DESC LIMIT #{upBound},#{lowerBound}
+    </select>
+
+    <select id="findVarietyCount" resultType="int">
+        SELECT COUNT(*) FROM variety
+        <where>
+            <include refid="whereClause"/>
+        </where>
+    </select>
+
+
+    <!--删除指定审定品种-->
+    <delete id="deleteVarietyById">
+        DELETE FROM variety WHERE varietyId IN
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <!-- 插入单个审定品种 -->
+    <insert id="addVariety" parameterType="variety">
+		REPLACE INTO variety VALUES (#{varietyId},#{judgementNo},#{vname},#{judgementYear},#{type},#{judgeId},#{isTransgenosis},
+		#{appCompany},#{announcementID})
+	</insert>
+    <!--批量插入审定品种-->
+    <insert id="addAllVariety">
+        REPLACE INTO variety VALUES
+        <foreach collection="list" index="index" item="variety" separator=",">
+            (#{variety.varietyId},#{variety.judgementNo},#{variety.vname},#{variety.judgementYear},#{variety.type},#{variety.judgeId},#{variety.isTransgenosis},
+            #{variety.appCompany},#{variety.announcementID})
+        </foreach>
+    </insert>
+    <update id="updateVariety" parameterType="variety">
+        UPDATE variety SET judgementNo=#{judgementNo},vname=#{vname},judgementYear=#{judgementYear},type=#{type},judgeId=#{judgeId},isTransgenosis=#{isTransgenosis},
+		appCompany=#{appCompany},announcementID=#{announcementID} WHERE varietyId=#{varietyId}
+    </update>
+
+</mapper>

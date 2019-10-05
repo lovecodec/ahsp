@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>安徽省主要农作物综合平台后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入bootstrap样式 -->
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/mycss/backcommon.css"/>
+    <script src="../static/bootstrap-3.3.7/js/jquery.min.js"></script>
+    <script src="../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../static/echarts/echarts.js"></script>
+    <script src="../static/myjs/backchart.js"></script>
+    <!--引入confirm.js-->
+    <link rel="stylesheet" href="http://cdn.yangc.top/jquery-confirm/jquery-confirm.min.css">
+    <script src="http://cdn.yangc.top/jquery-confirm/jquery-confirm.js"></script>
+    <style>
+        .col-md-12{
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Admin Platform</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">用户反馈 <span class="badge">1</span></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;尊敬的管理员<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a href="logs.html">日志查看</a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:;" onclick="exit()">退出</a></li>
+                <li><a href="help.html">帮助文档</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    <div style="clear: both"></div>
+</nav>
+<div class="row">
+    <div class="col-md-2 leftnav">
+        <div class="list-group">
+            <a href="spiderManage/bdxs.html" class="list-group-item">百度学术爬虫</a>
+            <a href="spiderManage/notice.html" class="list-group-item">公告爬虫</a>
+            <a href="spiderManage/article.html" class="list-group-item">知网论文爬虫</a>
+            <a href="spiderManage/noticeDetail.html" class="list-group-item">申请（授权）公告详情爬虫</a>
+            <a href="spiderManage/news.html" class="list-group-item">农业新闻爬虫</a>
+            <a href="spiderManage/patent.html" class="list-group-item">专家专利爬虫</a>
+            <a href="spiderManage/variety.html" class="list-group-item">审定品种爬虫</a>
+            <a href="spiderManage/varietyRight.html" class="list-group-item">品种权爬虫</a>
+        </div>
+        <div class="list-group">
+            <a href="dataManage/expertManage.html" class="list-group-item" target="_blank">数据管理</a>
+            <a href="spiderManage/proxy.html" class="list-group-item" target="_blank">代理池管理</a>
+        </div>
+        <div class="list-group">
+            <a href="dataManage/userManage.html" class="list-group-item">普通用户管理</a>
+            <a href="dataManage/adminManage.html" class="list-group-item">管理员用户管理</a>
+        </div>
+    </div>
+    <!-- 内容 -->
+    <div class="col-md-10 content">
+        <!-- 已有数据 -->
+        <div class="manage-page">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;品种数据</div>
+                <div class="panel-body">
+                    <div id="variety" class="col-md-4" style="height: 300px"></div>
+                    <div id="vr" class="col-md-5 col-md-offset-1" style="height: 300px"></div>
+                </div>
+            </div>
+            <!-- 爬虫状态-->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;爬虫状态总览</div>
+                    <table class="table" id="spider_status_table">
+                        <tr>
+                            <th>#</th>
+                            <th>爬虫类型</th>
+                            <th>上次启动时间</th>
+                            <th>新增数据</th>
+                            <th>共采集数据</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    draw_index_variety();
+    draw_index_vr();
+    window.onload = function () {
+        $.ajax({
+           type : 'post',
+            url : '../getSpiderStatus.action',
+            async : 'true',
+            cache : 'false',
+            success : function(data){
+               for(var i = 0; i < data.length; i++){
+                   var spiderStatus = data[i];
+                   var str = "<tr><th scope='row'>" + spiderStatus.spider_id + "</th>" +
+                       "<td>" + spiderStatus.spider_name + "</td>" +
+                           "<td>" + spiderStatus.lastStarttime + "</td>" +
+                           "<td>" + spiderStatus.new_count + "</td>" +
+                           "<td>" + spiderStatus.total_count + "</td></tr>";
+                   $("#spider_status_table").append(str);
+               }
+            }
+        });
+    }
+
+    //判断是否注销
+    function exit() {
+        //../adminLogout.action
+        $.confirm({
+           title : '提示',
+           content : '是否退出系统？',
+           buttons : {
+               确认 : function () {
+                    window.location.href="../adminLogout.action";
+               },
+               取消 : function () {
+
+               }
+           }
+        });
+    }
+</script>
+</body>
+</html>

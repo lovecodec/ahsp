@@ -1,0 +1,34 @@
+@charset "UTF-8";
+.navbar-default .navbar-nav > li > a{
+	color:black;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	color: red;
+}
+.navbar-brand {
+	padding-bottom: 0px;
+	padding-top: 2px;
+}
+.describe {
+	font-size: 13px;
+	text-align: center;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.first {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.footer {
+	border-top: 2px solid #1f7fd2;
+	background: rgb(240, 240, 240, .5);
+}
+.notice{
+	margin-bottom:15px;
+}
+.notice a:link{
+	color:black;
+}

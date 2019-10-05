@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>专家爬虫管理</title>
+    <link rel="stylesheet" href="../../static/bootstrap-3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/mycss/backcommon.css"/>
+    <script src="../../static/bootstrap-3.3.7/js/jquery.min.js"></script>
+    <script src="../../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../static/echarts/echarts.js"></script>
+    <script src="../../static/myjs/backcommon.js"></script>
+    <script src="../../static/myjs/spiderManage.js"></script>
+    <script src="../../static/vuejs/vue.min.js"></script>
+    <style>
+        .option-2-item {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../index.html">Admin Platform</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">消息 <span class="badge">1</span></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;尊敬的管理员<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a href="">个人信息</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../adminLogout.action">退出</a></li>
+                <li><a href="../help.html">帮助文档</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    <div style="clear: both"></div>
+</nav>
+<div class="row">
+    <!-- 侧边导航 -->
+    <div class="col-md-2 leftnav">
+        <div class="list-group">
+            <a href="bdxs.html" class="list-group-item active">专家爬虫</a>
+            <a href="notice.html" class="list-group-item">公告爬虫</a>
+            <a href="article.html" class="list-group-item">知网论文爬虫</a>
+            <a href="noticeDetail.html" class="list-group-item">申请（授权）公告详情爬虫</a>
+            <a href="news.html" class="list-group-item">农业新闻爬虫</a>
+            <a href="patent.html" class="list-group-item">专家专利爬虫</a>
+            <a href="variety.html" class="list-group-item">审定品种爬虫</a>
+            <a href="varietyRight.html" class="list-group-item">品种权爬虫</a>
+        </div>
+        <div class="list-group">
+            <a href="../dataManage/expertManage.html" class="list-group-item" target="_blank">数据管理</a>
+            <a href="proxy.html" class="list-group-item">代理池管理</a>
+        </div>
+        <div class="list-group">
+            <a href="../dataManage/userManage.html" class="list-group-item">普通用户管理</a>
+            <a href="../dataManage/adminManage.html" class="list-group-item">管理员用户管理</a>
+        </div>
+    </div>
+    <div class="col-md-10 content">
+        <div class="manage-page">
+            <!-- 警告框 -->
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                百度学术爬虫用于发现农业专家并采集他们的部分论文信息，数据来源于<strong class="text-danger">百度学术</strong>。
+            </div>
+            <div class="status">
+                <div class="status-pannel col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;爬虫基本信息</div>
+                        <table class="table table-responsive" id="table">
+                            <tr>
+                                <th>#</th>
+                                <th>上次启动时间</th>
+                                <th>新增数据</th>
+                                <th>共采集数据</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{spider_name}}</th>
+                                <td>{{lastStarttime}}</td>
+                                <td>{{new_count}}</td>
+                                <td>{{total_count}}</td>
+                                <td class="spider-currentStatus">已停止</td>
+                                <td class="spider-option">
+                                    <button class="btn btn-success btn-sm" onclick="startSpider(1)">运行</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="spider-config">
+                <!-- 百度学术爬虫配置 -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-cog"></span>&nbsp;爬虫启动配置
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <label for="spider-time">爬虫定时停止（小时）</label>
+                            <select class="form-control" id="spider-time">
+                                <option value="0">不定时</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="threadNum">线程数</label>
+                            <input type="text" class="form-control" name="threadNum" id="threadNum" placeholder="默认为1">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="proxy">是否使用代理</label>
+                            <select class="form-control" id="proxy">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="spider-accuracy">启动类型选择</label>
+                            <select class="form-control" name="spider-accuracy" id="spider-accuracy">
+                                <option class="option-1" value="0">更新整个数据库</option>
+                                <option class="option-2" value="1">获取/更新某个专家数据</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 option-2-item">
+                            <label for="expertName">专家姓名(*)</label>
+                            <input type="text" class="form-control" placeholder="姓名" id="expertName">
+                        </div>
+                        <div class="col-md-3 option-2-item">
+                            <label for="workplace">专家工作地点(*)</label>
+                            <input type="text" class="form-control" placeholder="工作场所" id="workplace">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--爬虫运行结果-->
+            <div class="spider-result">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;
+                        爬虫运行结果（部分），精确操作请进入<a href="../dataManage/expertManage.html"
+                                                      style="color:white;" target="_blank">【专家数据】</a>页面
+                    </div>
+
+                    <div class="panel-body" id="resultTable">
+                        <div v-if="flag == '0'">
+                            <h3 >爬虫还没有启动！</h3>
+                        </div>
+                        <div v-else-if="flag == '1'">
+                            <h3>结果获取中。。。</h3>
+                        </div>
+                        <div v-else>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <th>专家id</th>
+                                    <th>姓名</th>
+                                    <th>工作地点</th>
+                                    <th>研究领域</th>
+                                </tr>
+                                <tr v-for="expert in beanList" v-cloak>
+                                    <td>{{expert.eid}}</td>
+                                    <td>{{expert.name}}</td>
+                                    <td>{{expert.workplace}}</td>
+                                    <td>{{expert.domain}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#spider-accuracy").click(function () {
+        var optionText = $("#spider-accuracy option:selected").val();
+        if (optionText == "0") {
+            $(".option-2-item").hide();
+        } else {
+            $(".option-2-item").show();
+        }
+    });
+</script>
+<script type="text/javascript">
+    var expertVue = new Vue({
+        el: '#resultTable',
+        data: {
+            flag: '0',
+            beanList: [],
+        }
+    });
+
+    var vm = new Vue({
+        el: '#table',
+        data: {
+            spider_name: '',
+            lastStarttime: '',
+            new_count: '',
+            total_count: '',
+        }
+    });
+
+    $(document).ready(function getSpiderStatusById() {
+        $.ajax({
+            type: 'post',
+            url: '../../getSpiderStatusById.action',
+            cache: false,
+            async: true,
+            data: 'spider_id=1',
+            success: function (result) {
+                vm.spider_name = result.spider_name;
+                vm.lastStarttime = result.lastStarttime;
+                vm.new_count = result.new_count;
+                vm.total_count = result.total_count;
+            },
+        });
+    });
+</script>
+</body>
+</html>

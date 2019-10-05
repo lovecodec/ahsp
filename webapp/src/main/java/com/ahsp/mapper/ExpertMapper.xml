@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.ExpertMapper">
+
+    <!-- 查询一共有多少条专家记录，无条件的情况下 -->
+    <select id="findAllCount" resultType="int">
+		SELECT COUNT(*) FROM expert
+	</select>
+
+    <!-- 根据专家姓名去查找他的论文数量 -->
+    <select id="findArticleCountByEname" resultType="int">
+		SELECT DISTINCT
+		COUNT(title) FROM article WHERE info like '%${ename}%'
+	</select>
+
+    <!-- 根据专家姓名去查找他的专利数量 -->
+    <select id="findPatentCountByEname" resultType="int">
+		SELECT COUNT(*)
+		FROM patent WHERE fmr like '%${ename}%'
+	</select>
+
+    <select id="loadAllExpert" resultType="expertExt">
+		SELECT * FROM expert LIMIT
+		#{upBound},#{lowerBound}
+	</select>
+
+    <select id="findArticleByEname" resultType="article">
+		SELECT * FROM article WHERE info like '%${ename}%'
+		LIMIT #{upBound},#{lowerBound}
+	</select>
+
+    <select id="findPatentByEname" resultType="patent">
+		SELECT * FROM patent WHERE fmr like '%${ename}%'
+		LIMIT #{upBound},#{lowerBound}
+	</select>
+
+    <select id="getExpertInfo" resultType="expertExt">
+		SELECT * FROM expert WHERE name = #{ename} LIMIT 1
+	</select>
+
+
+    <!--EXPERT CRUD-->
+    <select id="getAllExpert" resultType="expert">
+		SELECT * FROM expert LIMIT
+		#{upBound},#{lowerBound}
+	</select>
+    <insert id="addExpert" parameterType="expert">
+		REPLACE INTO expert VALUES (#{eid},#{name},#{workplace},#{domain},#{gather})
+	</insert>
+    <delete id="deleteExpertById">
+        DELETE FROM expert WHERE eid IN
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="addAllExpert">
+        REPLACE INTO expert VALUES
+        <foreach collection="list" item="expert" index="index" separator=",">
+            (#{expert.eid},#{expert.name},#{expert.workplace},#{expert.domain},#{expert.gather})
+        </foreach>
+    </insert>
+    <update id="updateExpert" parameterType="expert">
+		UPDATE expert SET name=#{name},workplace=#{workplace},domain=#{domain} WHERE eid=#{eid}
+	</update>
+    <select id="findExpertByName" resultType="expert">
+        SELECT * FROM expert WHERE name LIKE '%${expertName}%'
+    </select>
+    <select id="findExpertCountByName" resultType="int">
+        SELECT COUNT(*) FROM expert WHERE name LIKE '%${expertName}%'
+    </select>
+
+    <!--ARTICLE CRUD-->
+    <select id="findArticleCount" resultType="int">
+		SELECT COUNT(*) FROM article
+	</select>
+    <select id="getAllArticle" resultType="article">
+		SELECT * FROM article ORDER BY year DESC LIMIT
+		#{upBound},#{lowerBound}
+	</select>
+    <insert id="addArticle" parameterType="article">
+		REPLACE INTO article VALUES (#{aid},#{title},#{info},#{author},#{year},#{pubPlace},#{url},#{citation})
+	</insert>
+    <delete id="deleteArticleById">
+        DELETE FROM article WHERE aid IN
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="addAllArticle">
+        REPLACE INTO article VALUES
+        <foreach collection="list" item="article" index="index" separator=",">
+            (
+            #{article.aid},#{article.title},#{article.info},#{article.author},#{article.year},#{article.pubPlace},#{article.url},#{article.citation}
+            )
+        </foreach>
+    </insert>
+    <update id="updateArticle" parameterType="article">
+        UPDATE article SET title=#{title},info=#{info},author=#{author},year=#{year},pubPlace=#{pubPlace},url=#{url},citation=#{citation}
+        WHERE aid=#{aid}
+    </update>
+
+
+    <!--PATENT CRUD-->
+    <select id="findPatentCount" resultType="int">
+        SELECT COUNT(*) FROM patent
+    </select>
+    <select id="getAllPatent" resultType="patent">
+        SELECT * FROM patent ORDER BY sqr DESC LIMIT #{upBound},#{lowerBound}
+    </select>
+    <insert id="addAllPatent">
+        REPLACE INTO patent VALUES
+        <foreach collection="list" index="index" item="patent" separator=",">
+            (
+            #{patent.patentId},#{patent.zlmc},#{patent.sqh},#{patent.sqr},#{patent.sqss},#{patent.gkr},#{patent.gkh},#{patent.sqggh},#{patent.sqggr},#{patent.zflh},
+            #{patent.flh},#{patent.dyfmr},#{patent.sqren},#{patent.dz},#{patent.fmr},#{patent.dqqlr},#{patent.dlr},#{patent.dljg},#{patent.yxq},#{patent.fcfl},#{patent.gjc},
+            #{patent.zt},#{patent.zy},#{patent.zqlyq}
+            )
+        </foreach>
+    </insert>
+    <update id="updatePatent" parameterType="patent">
+        UPDATE patent SET zlmc=#{zlmc},sqh=#{sqh},sqr=#{sqr},sqss=#{sqss},gkr=#{gkr},gkh=#{gkh},sqggh=#{sqggh},sqggr=#{sqggr},zflh=#{zflh},
+        flh=#{flh},dyfmr=#{dyfmr},sqren=#{sqren},dz=#{dz},fmr=#{fmr},dqqlr=#{dqqlr},dlr=#{dlr},dljg=#{dljg},yxq=#{yxq},fcfl=#{fcfl},gjc=#{gjc},
+        zt=#{zt},zy=#{zy},zqlyq=#{zqlyq}) WHERE patentId=#{patentId}
+    </update>
+    <delete id="deletePatentById">
+        DELETE FROM patent WHERE patentId IN
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="addPatent" parameterType="patent">
+        INSERT INTO patent VALUES (
+        #{patentId},#{zlmc},#{sqh},#{sqr},#{sqss},#{gkr},#{gkh},#{sqggh},#{sqggr},#{zflh},
+        #{flh},#{dyfmr},#{sqren},#{dz},#{fmr},#{dqqlr},#{dlr},#{dljg},#{yxq},#{fcfl},#{gjc},
+        #{zt},#{zy},#{zqlyq})
+    </insert>
+
+</mapper>

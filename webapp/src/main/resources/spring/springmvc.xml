@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/context
+       					   http://www.springframework.org/schema/context/spring-context.xsd
+       					   http://www.springframework.org/schema/mvc 
+       					   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+  
+  <!-- 处理器 Handler-->
+  <!-- 使用注解扫描，去扫描controller，不用再去写bean --> 
+  <context:component-scan base-package="com.ahsp.controller"/>
+  
+  <!-- 视图解析器 -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  	<!-- 配置前缀和后缀，可以使得转发的路径更加简单 -->
+  	<property name="prefix" value=""></property>
+  	<property name="suffix" value=""></property>
+  </bean>
+  
+  
+  <!-- 注解的映射器和适配器必须一起使用 -->
+  <!-- 注解的映射器 -->
+ <!--  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+  <!-- 注解的适配器 -->
+  <!--  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+  <!-- 使用mvc的注解驱动代替上面的注解映射器和注解适配器
+  	mvc注解驱动默认加载很多的绑定参数方法
+  	实际开发中使用注解驱动
+   -->
+  <mvc:annotation-driven></mvc:annotation-driven>
+  
+  <!-- 自定义参数绑定 -->
+<!--   <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+  	转换器
+  	<property name="converters">
+  		<list>
+  			日期类型转换
+  			<bean class="com.chen.tmall.controller.converter.UserDateConverter"/>
+  		</list>
+  	</property>
+  </bean> -->
+
+    <!-- 文件上传的解析器 -->
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  	<property name="maxUploadSize">
+  		<value>5242880</value>
+  	</property>
+  </bean>
+</beans>

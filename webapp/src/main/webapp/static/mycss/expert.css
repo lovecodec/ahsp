@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+.param label {
+	font-weight: normal;
+}
+
+.param {
+	margin: 20px 0px;
+	border: 1px solid #e0e0e0;
+}
+
+.col-md-3, .col-md-12 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.col-md-12{
+	text-align: center;
+}
+
+tr{
+	font-size: 13px;
+}
+.copyright {
+	font-size: 13px;
+	background: #3a8bc0;
+	color: white;
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+.expert-pagination{
+	text-align: center;
+}

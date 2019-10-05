@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="dachuang@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.7">
+    <root id="1">
+      <DefaultCasing>lower/lower</DefaultCasing>
+    </root>
+    <schema id="2" parent="1" name="dachuang">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="mysql"/>
+    <schema id="5" parent="1" name="spring_cache"/>
+    <schema id="6" parent="1" name="tedustore"/>
+    <schema id="7" parent="1" name="test"/>
+    <schema id="8" parent="1" name="tmall"/>
+    <table id="9" parent="2" name="admin"/>
+    <table id="10" parent="2" name="article"/>
+    <table id="11" parent="2" name="expert"/>
+    <table id="12" parent="2" name="news"/>
+    <table id="13" parent="2" name="notice"/>
+    <table id="14" parent="2" name="notice_details"/>
+    <table id="15" parent="2" name="patent"/>
+    <table id="16" parent="2" name="spider_status"/>
+    <table id="17" parent="2" name="user"/>
+    <table id="18" parent="2" name="variety"/>
+    <table id="19" parent="2" name="variety_right"/>
+    <column id="20" parent="9" name="admin_id">
+      <Position>1</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="21" parent="9" name="admin_username">
+      <Position>2</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="22" parent="9" name="admin_password">
+      <Position>3</Position>
+      <DataType>VARCHAR(200)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="23" parent="9" name="last_login_time">
+      <Position>4</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="24" parent="9" name="last_login_ip">
+      <Position>5</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <key id="25" parent="9" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>admin_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="26" parent="10" name="aid">
+      <Position>1</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="27" parent="10" name="title">
+      <Position>2</Position>
+      <DataType>VARCHAR(250)|12</DataType>
+    </column>
+    <column id="28" parent="10" name="info">
+      <Position>3</Position>
+      <DataType>VARCHAR(500)|12</DataType>
+    </column>
+    <column id="29" parent="10" name="author">
+      <Position>4</Position>
+      <DataType>VARCHAR(200)|12</DataType>
+    </column>
+    <column id="30" parent="10" name="year">
+      <Position>5</Position>
+      <DataType>VARCHAR(30)|12</DataType>
+    </column>
+    <column id="31" parent="10" name="pubPlace">
+      <Position>6</Position>
+      <DataType>VARCHAR(300)|12</DataType>
+    </column>
+    <column id="32" parent="10" name="url">
+      <Position>7</Position>
+      <DataType>VARCHAR(300)|12</DataType>
+    </column>
+    <column id="33" parent="10" name="citation">
+      <Position>8</Position>
+      <Comment>被引数</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <key id="34" parent="10" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>aid</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="35" parent="11" name="eid">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="36" parent="11" name="name">
+      <Position>2</Position>
+      <DataType>VARCHAR(10)|12</DataType>
+    </column>
+    <column id="37" parent="11" name="workplace">
+      <Position>3</Position>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="38" parent="11" name="domain">
+      <Position>4</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="39" parent="11" name="gather">
+      <Position>5</Position>
+      <Comment>专家信息来源</Comment>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <index id="40" parent="11" name="unqiue_index">
+      <ColNames>name
+workplace</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="41" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>eid</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="42" parent="12" name="news_id">
+      <Position>1</Position>
+      <Comment>主键唯一标识</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="43" parent="12" name="news_title">
+      <Position>2</Position>
+      <Comment>文章标题</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="44" parent="12" name="news_author">
+      <Position>3</Position>
+      <Comment>文章对应链接</Comment>
+      <DataType>VARCHAR(200)|12</DataType>
+    </column>
+    <column id="45" parent="12" name="news_time">
+      <Position>4</Position>
+      <Comment>文章发表时间</Comment>
+      <DataType>VARCHAR(60)|12</DataType>
+    </column>
+    <column id="46" parent="12" name="news_summary">
+      <Position>5</Position>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="47" parent="12" name="news_href">
+      <Position>6</Position>
+      <DataType>VARCHAR(300)|12</DataType>
+    </column>
+    <key id="48" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>news_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="49" parent="13" name="notice_id">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="50" parent="13" name="notice_title">
+      <Position>2</Position>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="51" parent="13" name="notice_href">
+      <Position>3</Position>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="52" parent="13" name="notice_date">
+      <Position>4</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="53" parent="13" name="notice_type">
+      <Position>5</Position>
+      <DataType>VARCHAR(20)|12</DataType>
+    </column>
+    <key id="54" parent="13" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>notice_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="55" parent="14" name="noticeDetailId">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="56" parent="14" name="cropName">
+      <Position>2</Position>
+      <Comment>作物种类</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="57" parent="14" name="breedName">
+      <Position>3</Position>
+      <Comment>品种名、暂定名</Comment>
+      <DataType>VARCHAR(50)|12</DataType>
+    </column>
+    <column id="58" parent="14" name="appNo">
+      <Position>4</Position>
+      <Comment>申请号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="59" parent="14" name="appDate">
+      <Position>5</Position>
+      <Comment>申请日期</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="60" parent="14" name="applicant">
+      <Position>6</Position>
+      <Comment>申请人</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="61" parent="14" name="type">
+      <Position>7</Position>
+      <Comment>公告类型</Comment>
+      <DataType>VARCHAR(10)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="62" parent="14" name="state">
+      <Position>8</Position>
+      <Comment>权力恢复/</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="63" parent="14" name="pubDate">
+      <Position>9</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="64" parent="14" name="grantNo">
+      <Position>10</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="65" parent="14" name="grantDate">
+      <Position>11</Position>
+      <Comment>授权日</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="66" parent="14" name="pubNo">
+      <Position>12</Position>
+      <Comment>公告号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="67" parent="14" name="owner">
+      <Position>13</Position>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="68" parent="14" name="ownerAddress">
+      <Position>14</Position>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <key id="69" parent="14" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>noticeDetailId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="70" parent="15" name="patentId">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="71" parent="15" name="zlmc">
+      <Position>2</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="72" parent="15" name="sqh">
+      <Position>3</Position>
+      <Comment>申请号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="73" parent="15" name="sqr">
+      <Position>4</Position>
+      <Comment>申请日</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="74" parent="15" name="sqss">
+      <Position>5</Position>
+      <Comment>申请省市</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="75" parent="15" name="gkr">
+      <Position>6</Position>
+      <Comment>公开日</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="76" parent="15" name="gkh">
+      <Position>7</Position>
+      <Comment>公开号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="77" parent="15" name="sqggh">
+      <Position>8</Position>
+      <Comment>申请公告号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="78" parent="15" name="sqggr">
+      <Position>9</Position>
+      <Comment>申请公告日</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="79" parent="15" name="zflh">
+      <Position>10</Position>
+      <Comment>主分类号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="80" parent="15" name="flh">
+      <Position>11</Position>
+      <Comment>分类号</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="81" parent="15" name="dyfmr">
+      <Position>12</Position>
+      <Comment>第一发明人</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="82" parent="15" name="sqren">
+      <Position>13</Position>
+      <Comment>申请人</Comment>
+      <DataType>VARCHAR(200)|12</DataType>
+    </column>
+    <column id="83" parent="15" name="dz">
+      <Position>14</Position>
+      <Comment>地址</Comment>
+      <DataType>VARCHAR(200)|12</DataType>
+    </column>
+    <column id="84" parent="15" name="fmr">
+      <Position>15</Position>
+      <Comment>发明人</Comment>
+      <DataType>VARCHAR(200)|12</DataType>
+    </column>
+    <column id="85" parent="15" name="dqqlr">
+      <Position>16</Position>
+      <Comment>当前权利人</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="86" parent="15" name="dlr">
+      <Position>17</Position>
+      <Comment>代理人</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="87" parent="15" name="dljg">
+      <Position>18</Position>
+      <Comment>代理机构</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="88" parent="15" name="yxq">
+      <Position>19</Position>
+      <Comment>优先权</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="89" parent="15" name="fcfl">
+      <Position>20</Position>
+      <Comment>范畴分类</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="90" parent="15" name="gjc">
+      <Position>21</Position>
+      <Comment>关键词</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="91" parent="15" name="zt">
+      <Position>22</Position>
+      <Comment>状态</Comment>
+      <DataType>VARCHAR(40)|12</DataType>
+    </column>
+    <column id="92" parent="15" name="zy">
+      <Position>23</Position>
+      <Comment>摘要</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="93" parent="15" name="zqlyq">
+      <Position>24</Position>
+      <Comment>主权力要求</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <key id="94" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>patentId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="95" parent="16" name="spider_id">
+      <Position>1</Position>
+      <Comment>爬虫id</Comment>
+      <DataType>INT(10)|4</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="96" parent="16" name="spider_name">
+      <Position>2</Position>
+      <Comment>爬虫名称</Comment>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="97" parent="16" name="lastStarttime">
+      <Position>3</Position>
+      <Comment>上次启动时间</Comment>
+      <DataType>VARCHAR(30)|12</DataType>
+    </column>
+    <column id="98" parent="16" name="new_count">
+      <Position>4</Position>
+      <Comment>新增记录数</Comment>
+      <DataType>INT(10)|4</DataType>
+    </column>
+    <column id="99" parent="16" name="total_count">
+      <Position>5</Position>
+      <Comment>总记录数</Comment>
+      <DataType>INT(10)|4</DataType>
+    </column>
+    <key id="100" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>spider_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="101" parent="17" name="user_id">
+      <Position>1</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="102" parent="17" name="username">
+      <Position>2</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="103" parent="17" name="password">
+      <Position>3</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="104" parent="17" name="last_login_time">
+      <Position>4</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="105" parent="17" name="last_login_ip">
+      <Position>5</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="106" parent="17" name="user_status">
+      <Position>6</Position>
+      <DataType>INT(10)|4</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="107" parent="17" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="108" parent="18" name="varietyId">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="109" parent="18" name="judgementNo">
+      <Position>2</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="110" parent="18" name="vname">
+      <Position>3</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="111" parent="18" name="judgementYear">
+      <Position>4</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="112" parent="18" name="type">
+      <Position>5</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="113" parent="18" name="judgeId">
+      <Position>6</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="114" parent="18" name="isTransgenosis">
+      <Position>7</Position>
+      <Comment>是否转基因</Comment>
+      <DataType>VARCHAR(10)|12</DataType>
+    </column>
+    <column id="115" parent="18" name="appCompany">
+      <Position>8</Position>
+      <Comment>申请公司</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="116" parent="18" name="announcementID">
+      <Position>9</Position>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <key id="117" parent="18" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>varietyId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="118" parent="19" name="vrId">
+      <Position>1</Position>
+      <DataType>VARCHAR(40)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="119" parent="19" name="appCode">
+      <Position>2</Position>
+      <Comment>申请号,主键</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="120" parent="19" name="grantCode">
+      <Position>3</Position>
+      <Comment>授权号</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="121" parent="19" name="vrType">
+      <Position>4</Position>
+      <Comment>作物类型</Comment>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="122" parent="19" name="vrName">
+      <Position>5</Position>
+      <Comment>作物名称</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <column id="123" parent="19" name="appDate">
+      <Position>6</Position>
+      <DataType>VARCHAR(35)|12</DataType>
+    </column>
+    <column id="124" parent="19" name="noticeType">
+      <Position>7</Position>
+      <Comment>公告类型--&gt;授权公告/申请公告</Comment>
+      <DataType>VARCHAR(80)|12</DataType>
+    </column>
+    <column id="125" parent="19" name="owner">
+      <Position>8</Position>
+      <Comment>品种权人</Comment>
+      <DataType>TEXT(65535)|-1</DataType>
+    </column>
+    <column id="126" parent="19" name="pubNo">
+      <Position>9</Position>
+      <Comment>公告号</Comment>
+      <DataType>VARCHAR(100)|12</DataType>
+    </column>
+    <key id="127" parent="19" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>vrId</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

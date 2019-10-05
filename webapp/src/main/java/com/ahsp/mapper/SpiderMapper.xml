@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.SpiderMapper">
+	<select id="getSpiderStatus" resultType="spiderStatus">
+		SELECT * FROM spider_status;
+	</select>
+	<select id="getSpiderStatusById" resultType="spiderStatus">
+		SELECT * FROM spider_status WHERE spider_id=#{spider_id}
+	</select>
+	<update id="updateSpiderStatus">
+		UPDATE spider_status SET lastStarttime=#{time} WHERE spider_id=#{spider_id}
+	</update>
+</mapper>

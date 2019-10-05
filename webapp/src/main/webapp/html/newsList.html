@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新闻列表</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="description" content="新闻列表界面">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/bootstrap-3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"/>
+    <link href="../static/mycss/newsList.css" rel="stylesheet"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button vrType="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                        aria-expanded="false">
+						<span class="glyphicon glyphicon-menu-hamburger"
+                              aria-hidden="true"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse"
+                 id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html">主页</a></li>
+                    <li><a href="appNoticeList.html">新闻公告</a></li>
+                    <li><a href="expert.html">专家信息查询</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                                            aria-expanded="false">品种信息查询</a>
+                        <ul class="dropdown-menu">
+                            <li><a
+                                    href="queryVariety.html">审定品种查询</a></li>
+                            <li><a href="queryVr.html">品种权查询</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input vrType="text" class="form-control" placeholder="Search"/>
+                    </div>
+                    <button vrType="submit" class="btn btn-default">全站搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">登录</a></li>
+                    <li><a href="#">注册</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                                            aria-expanded="false">关于我们</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">制作团队</a></li>
+                            <li><a href="#">品种数据来源</a></li>
+                            <li><a href="#">项目意义</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+
+<!-- 新闻列表 -->
+<div class="container">
+    <!-- 垂直导航 -->
+    <div class="col-md-3">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="javascript:void(0)">农作物新闻</a></li>
+            <li><a href="appNoticeList.html">品种权申请公告</a></li>
+            <li><a href="grantNoticeList.html">品种权授权公告</a></li>
+            <li><a href="#">农业百科知识</a></li>
+            <li><a href="#">作物病虫害知识</a></li>
+            <li><a href="#">农作物转基因科普</a></li>
+        </ul>
+    </div>
+
+
+    <div class="col-md-8">
+        <!-- ajax loading -->
+        <div class="newsList" id="newsList">
+        </div>
+        <!-- 分页操作 -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination">
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<!-- 页脚 -->
+<div class="container-fluid footer">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="describe first">网站简介|联系我们|使用帮助|网站地图</div>
+        <div class="describe">主办单位:安徽农业大学 技术支持:安农大陈锡超</div>
+        <div class="describe">地址:合肥市蜀山区安徽农业大学&nbsp;&nbsp;邮编:246141&nbsp;&nbsp;电话:17318532573</div>
+        <div class="describe">
+            总访问量:<span style="color: red">50000</span>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<!-- 引入javascript脚本 -->
+<script
+        src="../static/bootstrap-3.3.7/js/jquery.min.js"></script>
+<script
+        src="../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="../static/myjs/newsList.js"></script>
+<script>
+    $(function () {
+        $("[data-toggle='popover']").popover();
+    });
+
+    window.onload = loadAllNews(1);
+
+    function loadAllNews(pc) {
+        $.ajax({
+            type: 'post',
+            url: '../loadAllNews.action',
+            async: true,
+            cache: false,
+            data: 'pc=' + pc,
+            success: function (data) {
+                //生成新闻列表
+                getNews(data);
+                //生成分页框
+                getPagination(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>

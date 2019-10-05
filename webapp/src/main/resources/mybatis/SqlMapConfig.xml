@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 设置全局参数 -->
+<!-- 	<settings>
+		lazyLoadingEnabled：延迟加载的开关，默认是false
+		<setting name="lazyLoadingEnabled" value="true"/>
+		aggressiveLazyLoading：默认为true，一旦为true上面的懒加载开关失效
+		<setting name="aggressiveLazyLoading" value="false"/>
+		
+		cacheEnabled：二级缓存的总开关 默认是false
+		<setting name="cacheEnabled" value="true"/>
+	</settings> -->
+	
+	
+	<!-- 別名的定义，可以针对自己定义的po类来设置别名 -->
+	<typeAliases>
+		<!-- 针对单个po类的别名定义 -->
+		<!-- <typeAlias vrType="com.chen.mybatis.po.User" alias="user"/> -->
+		
+		<!-- 建议使用批量别名定义
+			指定包名，mybatis自动扫描包中的po类，自动定义别名，别名就是类名
+		 -->
+		 <package name="com.ahsp.po"/>
+	</typeAliases>
+
+</configuration>

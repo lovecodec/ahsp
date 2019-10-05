@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.VrMapper">
+    <select id="findAllVr" resultType="varietyRight" parameterType="int">
+		SELECT * FROM variety_right ORDER BY appDate DESC LIMIT
+		#{upBound},#{lowerBound}
+	</select>
+
+    <!-- 查询一共有多少条记录，无条件的情况下 -->
+    <select id="findAllVrCount" resultType="int">
+		select count(*) from variety_right
+	</select>
+
+    <!-- sql片段 -->
+    <sql id="whereClause">
+        <if test="criteria != null">
+            <if test="criteria.noticeType != null and criteria.noticeType !=''">
+                AND noticeType =#{criteria.noticeType}
+            </if>
+            <if test="criteria.vrName != null and criteria.vrName !=''">
+                AND vrName like '%${criteria.vrName}%'
+            </if>
+            <if test="criteria.vrType != null and criteria.vrType !=''">
+                AND vrType =#{criteria.vrType}
+            </if>
+            <if test="criteria.appCode != null and criteria.appCode !=''">
+                AND appCode like '%${criteria.appCode}%'
+            </if>
+            <if test="criteria.appDate != null and criteria.appDate !=''">
+                AND appDate =#{criteria.appDate}
+            </if>
+            <if test="criteria.owner != null and criteria.owner !=''">
+                AND owner like '%${criteria.owner}%'
+            </if>
+            <if test="criteria.pubNo != null and criteria.pubNo !=''">
+                AND pubNo like '%${criteria.pubNo}%'
+            </if>
+            <if test="criteria.grantCode != null and criteria.grantCode !=''">
+                AND grantCode like '%${criteria.grantCode}%'
+            </if>
+        </if>
+    </sql>
+
+    <select id="findVrByCriteria" resultType="varietyRight">
+        SELECT * FROM variety_right
+        <where>
+            <!-- 引入sql语句 -->
+            <include refid="whereClause"/>
+        </where>
+        ORDER BY appDate DESC LIMIT #{upBound},#{lowerBound}
+    </select>
+
+    <select id="findVrCountByCriteria" resultType="int">
+        SELECT COUNT(*) FROM variety_right
+        <where>
+            <include refid="whereClause"/>
+        </where>
+    </select>
+
+    <select id="loadVrInfo" resultType="appNoticeDetails">
+		SELECT * FROM notice_details WHERE breedName = #{vrname} and type = #{type}
+	</select>
+
+    <insert id="addVr" parameterType="varietyRight">
+		INSERT INTO variety_right VALUES (#{appCode},#{grantCode},#{vrType},#{vrName},#{appDate},#{noticeType},#{owner},#{pubNo})
+	</insert>
+    <delete id="deleteVr">
+		DELETE FROM variety_right WHERE appCode=#{appCode} AND grantCode=#{grantCode}
+	</delete>
+    <update id="updateVr" parameterType="varietyRight">
+        UPDATE variety_right SET appCod=#{appCode},grantCode=#{grantCode},vrType=#{vrType},vrName=#{vrName},appDate=#{appDate},noticeType=#{noticeType},owner=#{owner},pubNo=#{pubNo}
+    </update>
+    <insert id="addAllVr">
+        INSERT INTO variety_right VALUES
+        <foreach collection="list" item="vr" index="index" separator=",">
+            (
+            #{vr.appCode},#{vr.grantCode},#{vr.vrType},#{vr.vrName},#{vr.appDate},#{vr.noticeType},#{vr.owner},#{vr.pubNo}
+            )
+        </foreach>
+    </insert>
+</mapper>

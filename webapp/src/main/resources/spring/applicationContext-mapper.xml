@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	
+	<!-- 引用数据库连接的配置文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<!-- 配置数据源,使用dbcp连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${db.driverClass}"/>
+		<property name="url" value="${db.url}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+	</bean>
+	
+	<!-- spring对sqlSessionFactory的管理 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- SqlSessionFactory需要数据源信息，之前是写在sqlmapconfig.xml，现在需要重新指定 -->
+		<property name="dataSource" ref="dataSource"></property>	
+		<!-- mybatis的配置文件路径 -->
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+	</bean>
+	
+	<!-- mapper代理开发之批量处理mapper配置 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定批量mapper配置的包名 -->
+		<property name="basePackage" value="com.ahsp.mapper"></property>
+		<!-- 指定使用的SqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+</beans>

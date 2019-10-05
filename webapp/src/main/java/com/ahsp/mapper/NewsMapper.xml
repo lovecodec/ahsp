@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.NewsMapper">
+    <select id="loadNews" resultType="news">
+		SELECT * FROM news ORDER BY news_time DESC limit 0,3
+	</select>
+    <select id="findCount" resultType="int">
+		SELECT COUNT(*) FROM news
+	</select>
+    <select id="loadAllNews" resultType="news">
+		SELECT * FROM news ORDER BY news_time DESC limit #{upBound},#{lowerBound}
+	</select>
+
+
+    <!--新闻数据的CRUD-->
+    <delete id="deleteNewsById">
+        DELETE FROM news WHERE news_id IN
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="addAllNews">
+        REPLACE INTO news VALUES
+        <foreach collection="list" index="index" item="news" separator=",">
+            (#{news.news_id},#{news.news_title},#{news.news_author},#{news.news_time},#{news.news_summary},#{news.news_href})
+        </foreach>
+    </insert>
+
+</mapper>

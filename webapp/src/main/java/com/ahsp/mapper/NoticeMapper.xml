@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ahsp.mapper.NoticeMapper">
+
+	<select id="loadNotice" resultType="notice">
+		SELECT * FROM notice ORDER BY notice_date DESC limit 0,10
+	</select>
+	
+	<select id="findCountByType" resultType="int">
+		SELECT COUNT(*) FROM notice WHERE notice_type = #{noticeType}
+	</select>
+	
+	<select id="loadNoticeByType" resultType="notice">
+		SELECT * FROM notice WHERE notice_type = #{noticeType} ORDER BY notice_date DESC LIMIT #{upBound},#{lowerBound} 
+	</select>
+
+	<select id="findCount" resultType="int">
+		SELECT COUNT(*) FROM notice
+	</select>
+
+	<select id="getNotice" resultType="notice">
+		SELECT * FROM notice ORDER BY notice_date DESC LIMIT #{upBound},#{lowerBound}
+	</select>
+
+	<delete id="deleteNoticeById">
+		DELETE FROM notice WHERE notice_id IN
+		<foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<insert id="addAllNotice">
+		REPLACE INTO notice VALUES
+		<foreach collection="list" item="notice" index="index" separator=",">
+			(#{notice.notice_id},#{notice.notice_title},#{notice.notice_href},#{notice.notice_date},#{notice.notice_type})
+		</foreach>
+	</insert>
+</mapper>

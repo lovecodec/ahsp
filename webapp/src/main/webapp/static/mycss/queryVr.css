@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.navbar{
+	margin-bottom:0px;
+}
+
+
+.col-md-3, .col-md-12 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.col-md-12,#nav-page{
+	text-align: center;
+}
+
+#rows{
+	margin-bottom:10px;
+}
+
+.key{
+	font-weight:bold;
+}
+.param label {
+	font-weight: normal;
+}
+
+.param {
+	margin: 20px 0px;
+	border: 1px solid #e0e0e0;
+}
+
+tr,td{
+	word-break: break-all;
+	font-size: 12px;
+}
+
+.copyright {
+	font-size: 13px;
+	background: #3a8bc0;
+	color: white;
+	margin-top: 40px;
+	margin-bottom: 20px;
+}

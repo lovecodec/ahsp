@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>专家结果管理</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入bootstrap样式 -->
+    <link rel="stylesheet" href="../../static/bootstrap-3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/mycss/backcommon.css"/>
+    <script src="../../static/bootstrap-3.3.7/js/jquery.min.js"></script>
+    <script src="../../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../static/vuejs/vue.min.js"></script>
+    <script src="../../static/myjs/backcommon.js"></script>
+    <script src="../../static/myjs/spiderResult.js"></script>
+    <!--引入confirm.js-->
+    <link rel="stylesheet" href="http://cdn.yangc.top/jquery-confirm/jquery-confirm.min.css">
+    <script src="http://cdn.yangc.top/jquery-confirm/jquery-confirm.js"></script>
+</head>
+<body>
+<!--添加专家模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加专家</h4>
+            </div>
+            <div class="modal-body">
+                <div class="rows">
+                    <div class="col-md-4"><label for="expertName">专家姓名</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="expertName"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="workplace">工作地点</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="workplace"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="domain">研究领域</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="domain"></div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-add-expert">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!--修改专家信息模态框-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel1">修改专家</h4>
+            </div>
+            <div class="modal-body">
+                <div class="rows">
+                    <div class="col-md-4"><label for="expertId_edit">专家id</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="expertId_edit"
+                                                 readonly="readonly"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="expertName_edit">专家姓名</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="expertName_edit"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="workplace_edit">工作地点</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="workplace_edit"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="domain_edit">研究领域</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="domain_edit"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-md-4"><label for="expertGather_edit">数据来源</label></div>
+                    <div class="col-md-8"><input type="text" class="form-control" id="expertGather_edit"
+                                                 readonly="readonly"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-update-expert">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<!-- 顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../index.html">Admin Platform</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">消息 <span class="badge">1</span></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;尊敬的管理员<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a href="">个人信息</a></li>
+                    </ul>
+                </li>
+                <li><a href="../adminLogout.action">退出</a></li>
+                <li><a href="../help.html">帮助文档</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    <div style="clear: both"></div>
+</nav>
+
+<div class="row">
+    <!-- 侧边导航 -->
+    <div class="col-md-2 leftnav">
+        <div class="list-group">
+            <a href="javascript:void(0)" class="list-group-item active">专家数据</a>
+            <a href="noticeManage.html" class="list-group-item">公告数据</a>
+            <a href="articleManage.html" class="list-group-item">知网论文数据</a>
+            <a href="noticeDetailManage.html" class="list-group-item">公告详情数据</a>
+            <a href="newsManage.html" class="list-group-item">农业新闻数据</a>
+            <a href="patentManage.html" class="list-group-item">专家专利数据</a>
+            <a href="varietyManage.html" class="list-group-item">审定品种数据</a>
+            <a href="vrManage.html" class="list-group-item">品种权数据</a>
+        </div>
+    </div>
+    <!-- 内容 -->
+    <div class="col-md-10 content" id="content">
+        <!-- 警告框 -->
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span>
+            </button>
+            您当前有待处理数据{{tr}}条
+        </div>
+        <!--导航条-->
+        <div class="navbar-tables">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active" v-if="state == '1'">
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(1,1,1)'">上次爬取</a>
+                </li>
+                <li role="presentation" v-if="state != '1'">
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(1,1,1)'">上次爬取</a>
+                </li>
+                <li role="presentation" class="active" v-if="state == '2'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(1,1,2)'">未审核</a>
+                </li>
+                <li role="presentation" v-if="state != '2'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(1,1,2)'">未审核</a>
+                </li>
+                <li role="presentation" class="active" v-if="state == '3'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(1,1,3)'">已审核</a>
+                </li>
+                <li role="presentation" v-if="state != '3'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(1,1,3)'">已审核</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row" style="margin: 0">
+            <!--按钮组-->
+            <div id="toolbar" class="btn-group col-md-6" style="padding-left: 0">
+                <button id="btn_add" type="button" class="btn btn-default" data-toggle='modal' data-target='#myModal'>
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>手动添加
+                </button>
+                <button id="btn_add_all" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>全部添加
+                </button>
+                <button id="btn_delete_all" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>全部删除
+                </button>
+                <button id="btn_edit" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>选择修改
+                </button>
+                <button id="btn_delete" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>选择删除
+                </button>
+                <button id="btn-toExcel" type="button" class="btn btn-default" onclick="exportExcel('table')">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>打印表格
+                </button>
+            </div>
+            <!--搜索框-->
+            <div class="col-md-2 col-md-offset-3" style="margin-top:20px;padding-right: 0">
+                <input type="text" class="form-control" placeholder="按专家名进行搜索" id="expertName_search">
+            </div>
+            <div class="col-md-1" style="margin-top:20px;padding-left: 0">
+                <button class="btn btn-success" id="btn_search_expert">搜索</button>
+            </div>
+        </div>
+        <!--结果表格-->
+        <table class="table table-responsive table-hover" id="table" v-if="beanList.length > 0">
+            <tr>
+                <th>#</th>
+                <th>专家id</th>
+                <th>姓名</th>
+                <th>工作地点</th>
+                <th>研究领域</th>
+                <th>数据来源</th>
+            </tr>
+            <tr v-for="(expert,index) in beanList">
+                <td>
+                    <input type="checkbox" v-bind:id="'checkbox' + index">
+                </td>
+                <td v-bind:id="'eid' + index">{{expert.eid}}</td>
+                <td v-bind:id="'ename' + index">{{expert.name}}</td>
+                <td v-bind:id="'workplace' + index">{{expert.workplace}}</td>
+                <td v-bind:id="'domain' + index">{{expert.domain}}</td>
+                <td v-bind:id="'gather' + index">{{expert.gather}}</td>
+            </tr>
+        </table>
+        <!--分页栏-->
+        <nav aria-label="Page navigation" class="result-pagination text-center" v-if="beanList.length > 0">
+            <ul class="pagination" id="pagination">
+                <!--当前页-->
+                <!--<li class="disabled"><a href="javascript:void(0)">第{{pc}}页</a></li>-->
+                <!--首页-->
+                <li><a href="javascript:void(0)" v-bind:onclick="'getResultByState(' + 1 + ',1,' + state + ')'">首页</a>
+                </li>
+                <!--上一页-->
+                <li>
+                    <a href="javascript:void(0)" aria-label='Previous'
+                       v-bind:onclick="'getResultByState(' + 1 + ',' + previousPage + ',' + state + ')'"
+                       v-if="pc > 1"><span aria-hidden='true'>&laquo;</span></a>
+                </li>
+                <!--中间页-->
+                <li v-for="pageNum in pageArray">
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(' + 1 + ',' + pageNum + ',' + state + ')'"
+                       v-if="pageNum != null && pageNum != pc">{{pageNum}}</a>
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(' + 1 + ',' + pageNum + ',' + state + ')'"
+                       v-if="pageNum != null && pageNum == pc" style="color:red">{{pageNum}}</a>
+                </li>
+                <!--下一页-->
+                <li>
+                    <a href="javascript:void(0)" aria-label='Next'
+                       v-bind:onclick="'getResultByState(' + 1 + ',' + nextPage + ',' + state + ')'"
+                       v-if="pc < tp"><span aria-hidden='true'>&raquo;</span></a>
+                </li>
+                <!--尾页-->
+                <li><a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(' + 1 + ',' + tp + ',' + state + ')'">尾页</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getResultByState(1, 1, 1);
+    });
+
+    var commonVue = new Vue({
+        el: '#content',
+        data: {
+            spiderType: 1,
+            state: '1',
+            tp: '',
+            tr: '',
+            pc: '',
+            ps: '',
+            beanList: []
+        },
+        computed: {
+            pageArray: function () {
+                var beginPage;
+                var endPage;
+                var array = new Array();
+                if (this.tp <= 6) {
+                    beginPage = 1;
+                    endPage = this.tp;
+                }
+                else {
+                    beginPage = this.pc - 3;
+                    endPage = this.pc + 2;
+                    if (beginPage < 1) {
+                        beginPage = 1;
+                        endPage = 6;
+                    }
+                    if (endPage > this.tp) {
+                        beginPage = this.tp - 5;
+                        endPage = this.tp;
+                    }
+                }
+                for (var i = beginPage; i <= endPage; i++) {
+                    array[i] = i;
+                }
+                return array;
+            },
+            previousPage: function () {
+                return this.pc - 1;
+            },
+            nextPage: function () {
+                return this.pc + 1;
+            }
+        }
+    });
+
+    //显示编辑专家数据框
+    $("#btn_edit").click(function () {
+        //先检查是不是只选中了一个，如果不是则提示
+        if (checkedCount()) {
+            //先给修改框赋值
+            var index = getSingleCheckboxIndex();
+            $("#expertName_edit").val($("#ename" + index).text());
+            $("#workplace_edit").val($("#workplace" + index).text());
+            $("#expertId_edit").val($("#eid" + index).text());
+            $("#domain_edit").val($("#domain" + index).text());
+            $("#expertGather_edit").val($("#gather" + index).text());
+            $('#myModal1').modal({
+                keyboard: false
+            })
+        }
+    });
+
+    //更新专家数据
+    $("#btn-update-expert").click(function () {
+        var parameterStr = 'eid=' + $("#expertId_edit").val() + '&name=' + $("#expertName_edit").val() + '&domain=' + $("#domain_edit").val() + '&workplace=' + $("#workplace_edit").val();
+        var interfaceName = '../../updateExpert.action';
+        updateData(interfaceName, parameterStr);
+    });
+
+    //删除所有专家数据
+    $("#btn_delete_all").click(function () {
+        deleteAllData("../../deleteAllExpert.action");
+    });
+
+    //删除专家数据
+    $("#btn_delete").click(function () {
+        deleteData('#eid', '../../deleteExpertById.action');
+    });
+
+    //添加所有专家数据：将缓存中的专家数据存放在数据库中
+    $("#btn_add_all").click(function () {
+        addAllData("../../addAllExpert.action");
+    });
+
+    //添加单个专家的数据
+    $("#btn-add-expert").click(function () {
+        //发送ajax请求提交
+        var parameterStr = 'name=' + $("#expertName").val() + '&workplace=' + $("#workplace").val() + '&domain=' + $("#domain").val();
+        var interfaceName = '../../addExpert.action';
+        addSingleData(interfaceName, parameterStr);
+    });
+
+    //按姓名查询专家数据
+    $("#btn_search_expert").click(function () {
+        //获取表单信息
+        var expertName = $("#expertName_search").val();
+        $.ajax({
+            type : 'post',
+            url : '../../findExpertByName.action',
+            cache : false,
+            async : true,
+            data : 'expertName=' + expertName,
+            success : function (result) {
+                commonVue.tp = result.tp;
+                commonVue.tr = result.tr;
+                commonVue.ps = result.ps;
+                commonVue.pc = result.pc;
+                commonVue.beanList = result.beanList;
+            }
+        });
+    });
+</script>
+</body>
+</html>

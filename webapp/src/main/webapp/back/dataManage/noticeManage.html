@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通知公告数据管理</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入bootstrap样式 -->
+    <link rel="stylesheet" href="../../static/bootstrap-3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/mycss/backcommon.css"/>
+    <script src="../../static/bootstrap-3.3.7/js/jquery.min.js"></script>
+    <script src="../../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../static/vuejs/vue.min.js"></script>
+    <script src="../../static/myjs/spiderResult.js"></script>
+    <script src="../../static/myjs/backcommon.js"></script>
+    <!--引入confirm.js-->
+    <link rel="stylesheet" href="http://cdn.yangc.top/jquery-confirm/jquery-confirm.min.css">
+    <script src="http://cdn.yangc.top/jquery-confirm/jquery-confirm.js"></script>
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Admin Platform</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">消息 <span class="badge">1</span></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;尊敬的管理员<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                        <li><a href="">个人信息</a></li>
+                    </ul>
+                </li>
+                <li><a href="../adminLogout.action">退出</a></li>
+                <li><a href="../help.html">帮助文档</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    <div style="clear: both"></div>
+</nav>
+
+<div class="row">
+    <!-- 侧边导航 -->
+    <div class="col-md-2 leftnav">
+        <div class="list-group">
+            <a href="expertManage.html" class="list-group-item">专家数据</a>
+            <a href="noticeManage.html" class="list-group-item active">公告数据</a>
+            <a href="articleManage.html" class="list-group-item">知网论文数据</a>
+            <a href="noticeDetailManage.html" class="list-group-item">公告详情数据</a>
+            <a href="newsManage.html" class="list-group-item">农业新闻数据</a>
+            <a href="patentManage.html" class="list-group-item">专家专利数据</a>
+            <a href="varietyManage.html" class="list-group-item">审定品种数据</a>
+            <a href="vrManage.html" class="list-group-item">品种权数据</a>
+        </div>
+    </div>
+    <!-- 内容 -->
+    <div class="col-md-10 content" id="content">
+        <!-- 警告框 -->
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span>
+            </button>
+            您当前有待处理数据{{tr}}条
+        </div>
+        <!--导航条-->
+        <div class="navbar-tables">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active" v-if="state == '1'">
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(2,1,1)'">上次爬取</a>
+                </li>
+                <li role="presentation" v-if="state != '1'">
+                    <a href="javascript:void(0)"
+                       v-bind:onclick="'getResultByState(2,1,1)'">上次爬取</a>
+                </li>
+                <li role="presentation" class="active" v-if="state == '2'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(2,1,2)'">未审核</a>
+                </li>
+                <li role="presentation" v-if="state != '2'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(2,1,2)'">未审核</a>
+                </li>
+                <li role="presentation" class="active" v-if="state == '3'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(2,1,3)'">已审核</a>
+                </li>
+                <li role="presentation" v-if="state != '3'">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(2,1,3)'">已审核</a>
+                </li>
+            </ul>
+        </div>
+        <!--按钮组-->
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add_all" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>全部添加
+            </button>
+            <button id="btn_delete_all" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>全部删除
+            </button>
+            <button id="btn_delete" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>选择删除
+            </button>
+            <button id="btn-toExcel" type="button" class="btn btn-default" onclick="exportExcel('table')">
+                <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>打印表格
+            </button>
+        </div>
+
+        <!--表格展示内容-->
+        <table class="table table-responsive" id="table" v-if="beanList.length > 0">
+            <tr>
+                <th>#</th>
+                <th>公告id</th>
+                <th>标题</th>
+                <th>发表时间</th>
+                <th>公告类型</th>
+                <th>公告链接</th>
+            </tr>
+            <tr v-for="notice in beanList" v-cloak>
+                <td><input type="checkbox"></td>
+                <td>{{notice.notice_id}}</td>
+                <td>{{notice.notice_title}}</td>
+                <td>{{notice.notice_date}}</td>
+                <td>{{notice.notice_type}}</td>
+                <td>{{notice.notice_href}}</td>
+            </tr>
+        </table>
+
+        <nav aria-label="Page navigation" class="result-pagination text-center" v-if="beanList.length > 0">
+            <ul class="pagination" id="pagination">
+                <!--当前页-->
+                <!--<li class="disabled"><a href="javascript:void(0)">第{{pc}}页</a></li>-->
+                <!--首页-->
+                <li><a href="javascript:void(0)" v-bind:onclick="'getResultByState(' + 2 + ',1,' + state + ')'">首页</a></li>
+                <!--上一页-->
+                <li>
+                    <a href="javascript:void(0)" aria-label='Previous' v-bind:onclick="'getResultByState(' + 2 + ',' + previousPage + ',' + state + ')'" v-if="pc > 1"><span aria-hidden='true'>&laquo;</span></a>
+                </li>
+                <!--中间页-->
+                <li v-for="pageNum in pageArray">
+                    <a href="javascript:void(0)" v-bind:onclick="'getResultByState(' + 2 + ',' + pageNum + ',' + state + ')'" v-if="pageNum != null">{{pageNum}}</a>
+                </li>
+                <!--下一页-->
+                <li>
+                    <a href="javascript:void(0)" aria-label='Next' v-bind:onclick="'getResultByState(' + 2 + ',' + nextPage + ',' + state + ')'" v-if="pc < tp"><span aria-hidden='true'>&raquo;</span></a>
+                </li>
+                <!--尾页-->
+                <li><a href="javascript:void(0)" v-bind:onclick="'getResultByState(' + 2 + ',' + tp + ',' + state + ')'">尾页</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script>
+
+    var commonVue = new Vue({
+        el: '#content',
+        data: {
+            spiderType : 2,
+            state : '1',
+            tp: '',
+            tr: '',
+            pc: '',
+            ps: '',
+            beanList : []
+        },
+        computed : {
+            pageArray : function () {
+                var beginPage;
+                var endPage;
+                var array = new Array();
+                if(this.tp <= 6){
+                    beginPage = 1;
+                    endPage = this.tp;
+                }
+                else{
+                    beginPage = this.pc - 3;
+                    endPage = this.pc + 2;
+                    if(beginPage < 1){
+                        beginPage = 1;
+                        endPage = 6;
+                    }
+                    if(endPage > this.tp){
+                        beginPage = this.tp - 5;
+                        endPage = this.tp;
+                    }
+                }
+                for(var i = beginPage; i <= endPage; i++){
+                    array[i] = i;
+                }
+                return array;
+            },
+            previousPage : function () {
+                return this.pc -1;
+            },
+            nextPage : function () {
+                return this.pc + 1;
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        getResultByState(2, 1, 1);
+    });
+
+
+    //删除所有公告数据
+    $("#btn_delete_all").click(function () {
+        deleteAllData("../../deleteAllNotice.action")
+    });
+
+    //删除多个公告数据
+    $("#btn_delete").click(function () {
+        deleteData('#aid', '../../deleteNoticeById.action');
+    });
+
+    //添加所有公告数据
+    $("#btn_add_all").click(function () {
+        addAllData("../../addAllNotice.action");
+    });
+
+</script>
+</body>
+</html>

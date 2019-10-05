@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>专家科研成果查询</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="description" content="This is my page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/bootstrap-3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"/>
+    <link href="../static/mycss/expert.css" rel="stylesheet"/>
+    <script src="../static/myjs/jquery-1.9.1.min.js"></script>
+    <script src="../static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../static/myjs/expert.js"></script>
+    <script src="../static/vuejs/vue.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                        aria-expanded="false">
+						<span class="glyphicon glyphicon-menu-hamburger"
+                              aria-hidden="true"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse"
+                 id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html">主页</a></li>
+                    <li><a href="appNoticeList.html">新闻公告</a></li>
+                    <li><a href="expert.html">专家信息查询</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                                            aria-expanded="false">品种信息查询</a>
+                        <ul class="dropdown-menu">
+                            <li><a
+                                    href="queryVariety.html">审定品种查询</a></li>
+                            <li><a href="queryVr.html">品种权查询</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">全站搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">登录</a></li>
+                    <li><a href="#">注册</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                                            aria-expanded="false">关于我们</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">制作团队</a></li>
+                            <li><a href="#">品种数据来源</a></li>
+                            <li><a href="#">项目意义</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+
+<div class="content">
+    <div class="container">
+        <div class="param">
+            <div class="col-md-3">
+                <label>专家姓名</label> <input type="text"
+                                           class="form-control" name="judgementNo" id="judgementNo"/>
+            </div>
+            <div class="col-md-3">
+                <label>工作单位</label> <input type="text"
+                                           class="form-control" name="vrName" id="vrName"/>
+            </div>
+            <div class="col-md-3">
+                <label>年份</label> <input type="text"
+                                         class="form-control" name="judgementYear" id="judgementYear"/>
+            </div>
+            <div class="col-md-3">
+                <label>申请单位</label> <input type="text"
+                                           class="form-control" name="appCompany" id="appCompany"/>
+            </div>
+            <div class="col-md-3">
+                <label>所著论文</label> <input type="text"
+                                           class="form-control" name="appCompany" id="appCompany"/>
+            </div>
+            <div class="col-md-3">
+                <label>拥有专利</label> <input type="text"
+                                           class="form-control" name="appCompany" id="appCompany"/>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary" onclick="findVarietyByCriteria(1)">查询</button>
+                <a class="btn btn-warning" href="javascript:void(0)" role="button">重置</a>
+            </div>
+            <!-- 避免盒子模型塌陷 -->
+            <div style="clear: both"></div>
+        </div>
+
+        <!-- 表格展示 -->
+        <table class="table table-condensed table-hover table-striped"
+               id="table">
+            <tr class="info">
+                <th>专家姓名</th>
+                <th>工作单位</th>
+                <th>研究领域</th>
+                <th>专利数</th>
+                <th>论文数</th>
+            </tr>
+            <tr v-for="expert in beanList" v-cloak>
+                <td><a target="_blank" v-bind:href="'../html/expertInfo.html?name=' + expert.name">{{expert.name}}</a></td>
+                <td>{{expert.workplace}}</td>
+                <td>{{expert.domain}}</td>
+                <td>{{expert.patentCount}}</td>
+                <td>{{expert.articleCount}}</td>
+            </tr>
+
+        </table>
+        <!-- 分页操作 -->
+        <nav aria-label="Page navigation" class="expert-pagination">
+            <ul class="pagination" id="pagination">
+
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    window.onload = loadAllExpert(1);
+    var vm = new Vue({
+       el : '#table',
+       data : {
+           beanList : [],
+       }
+    });
+    function loadAllExpert(pc) {
+        $.ajax({
+            type: 'post',
+            url: '../loadAllExpert.action',
+            async: true,
+            cache: false,
+            data: 'pc=' + pc,
+            success: function (result) {
+                // 先删除原先的数据，然后生成新的数据
+                $("#pagination li").detach();
+                // 首先遍历表格
+                vm.beanList = result.beanList;
+                // 表格遍历完成后，生成分页栏
+                getPagination(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>
